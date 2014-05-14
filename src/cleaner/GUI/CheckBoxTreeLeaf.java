@@ -37,15 +37,22 @@ public class CheckBoxTreeLeaf extends JPanel {
 	}
 	@Override
 	public void setMaximumSize(Dimension dim){
-		Dimension box_max_dim = box.getMaximumSize();
-		box.setMaximumSize(new Dimension(box_max_dim.width, dim.height));
-		label.setMaximumSize(new Dimension((dim.width - box_max_dim.width), dim.height));
+		super.setMaximumSize(dim);
+		//Dimension box_max_dim = box.getMaximumSize();
+		//box.setMaximumSize(new Dimension(box_max_dim.width, dim.height));
+		//label.setMaximumSize(new Dimension((dim.width - box_max_dim.width), dim.height));
+		label.setMaximumSize(dim);
 	}
 	
 	
 	@Override
 	public String toString(){
+		System.out.println(getComponent(0).toString() + "\n" + getComponent(1).toString());
 		return label.getText();
+	}
+	
+	public void setSize(Dimension d){
+		this.getComponent(0).setSize(d);
 	}
 	
 	public CheckBoxTreeLeaf(String name, boolean isSelected){
@@ -57,10 +64,11 @@ public class CheckBoxTreeLeaf extends JPanel {
 		
 		setLayout(lm);
 		
+		
 		add(label);
 		add(box);
 	}
-	
+
 	
 	public CheckBoxTreeLeaf(){
 		this("",false);

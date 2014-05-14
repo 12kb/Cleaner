@@ -2,12 +2,11 @@ package cleaner;
 
 import java.util.Vector;
 
-import javax.swing.BoxLayout;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JTree;
 
-import cleaner.GUI.*;
+import cleaner.GUI.CheckBoxTreeNode;
+import cleaner.GUI.CheckBoxTreeNodeRenderer;
 
 public class Main extends JFrame {
 
@@ -35,7 +34,7 @@ public class Main extends JFrame {
 		root.add(elements);
 		
 		JTree tree = new JTree(root);
-		tree.setCellRenderer(new ProductTreeNodeRenderer());
+		tree.setCellRenderer(new CheckBoxTreeNodeRenderer());
 		
 		/*JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
@@ -52,8 +51,9 @@ public class Main extends JFrame {
 	}
 
 	public static void main(String[] args) {
+		@SuppressWarnings("unused")
 		Main frame = new Main();
-		Main.setDefaultLookAndFeelDecorated(true);
+		//Main.setDefaultLookAndFeelDecorated(true);
 	}
 
 }

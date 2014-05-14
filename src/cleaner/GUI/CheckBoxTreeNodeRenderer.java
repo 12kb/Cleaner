@@ -2,11 +2,9 @@ package cleaner.GUI;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -14,12 +12,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
 
-public class ProductTreeNodeRenderer implements TreeCellRenderer {
+public class CheckBoxTreeNodeRenderer implements TreeCellRenderer {
 		
 	private CheckBoxTreeLeaf leafRenderer;
-	protected JPanel getLeafRenderer() {
-		return leafRenderer;
-	}
 	
 	private DefaultTreeCellRenderer nonLeafRenderer = new DefaultTreeCellRenderer();
 
@@ -27,21 +22,14 @@ public class ProductTreeNodeRenderer implements TreeCellRenderer {
 			textForeground, textBackground;
 
 
-	public ProductTreeNodeRenderer() {
+	public CheckBoxTreeNodeRenderer() {
 		leafRenderer = new CheckBoxTreeLeaf();
-		
-		
 		
 		Font fontValue;
 		fontValue = UIManager.getFont("Tree.font");
 		if (fontValue != null) {
 			leafRenderer.setFont(fontValue);
 		}
-		
-		Boolean booleanValue = (Boolean) UIManager
-				.get("Tree.drawsFocusBorderAroundIcon");
-		leafRenderer.setFocusPainted((booleanValue != null)
-				&& (booleanValue.booleanValue()));
 
 		selectionBorderColor = UIManager.getColor("Tree.selectionBorderColor");
 		selectionForeground = UIManager.getColor("Tree.selectionForeground");
@@ -55,27 +43,30 @@ public class ProductTreeNodeRenderer implements TreeCellRenderer {
 			boolean selected, boolean expanded, boolean leaf, int row,
 			boolean hasFocus) {
 		
-		Component returnValue;
 		if (leaf) {
 			
 			Object d = ((DefaultMutableTreeNode)value).getUserObject();
 			CheckBoxTreeNode node = (CheckBoxTreeNode) d;
 			
 			if (selected) {
-				node.setForeground(selectionForeground);
-				node.setBackground(selectionBackground);
+				leafRenderer.setForeground(selectionForeground);
+				leafRenderer.setBackground(selectionBackground);
 			} else {
-				node.setForeground(textForeground);
-				node.setBackground(textBackground);
+				leafRenderer.setForeground(textForeground);
+				leafRenderer.setBackground(textBackground);
 			}
 			
-			node.label.setMaximumSize(CheckBoxTreeNode.size);
-
-			returnValue = node;	
-		} else {
-			returnValue = nonLeafRenderer.getTreeCellRendererComponent(tree,
-					value, selected, expanded, leaf, row, hasFocus);
+			leafRenderer.setText(node.name);
+			leafRenderer.setSelected(node.checked);
+			
+			leafRenderer.setMaximumSize(new Dimension(200,leafRenderer.getMaximumSize().height));
+			leafRenderer.setSize(new Dimension(200,leafRenderer.getMaximumSize().height));
+			
+			leafRenderer.toString();
+			
+			return leafRenderer;	
 		}
-		return returnValue;
+			return nonLeafRenderer.getTreeCellRendererComponent(tree,
+					value, selected, expanded, leaf, row, hasFocus);
 	}
 }
