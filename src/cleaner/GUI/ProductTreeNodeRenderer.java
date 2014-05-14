@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTree;
 import javax.swing.UIManager;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -13,18 +15,23 @@ import javax.swing.tree.TreeCellRenderer;
 
 
 public class ProductTreeNodeRenderer implements TreeCellRenderer {
-	private JCheckBox leafRenderer = new JCheckBox();
-
+		
+	private CheckBoxTreeLeaf leafRenderer;
+	protected JPanel getLeafRenderer() {
+		return leafRenderer;
+	}
+	
 	private DefaultTreeCellRenderer nonLeafRenderer = new DefaultTreeCellRenderer();
 
 	Color selectionBorderColor, selectionForeground, selectionBackground,
 			textForeground, textBackground;
 
-	protected JCheckBox getLeafRenderer() {
-		return leafRenderer;
-	}
 
 	public ProductTreeNodeRenderer() {
+		leafRenderer = new CheckBoxTreeLeaf();
+		
+		
+		
 		Font fontValue;
 		fontValue = UIManager.getFont("Tree.font");
 		if (fontValue != null) {
@@ -52,7 +59,7 @@ public class ProductTreeNodeRenderer implements TreeCellRenderer {
 		if (leaf) {
 			
 			Object d = ((DefaultMutableTreeNode)value).getUserObject();
-			ProductTreeNode node = (ProductTreeNode) d;
+			CheckBoxTreeNode node = (CheckBoxTreeNode) d;
 			
 			if (selected) {
 				node.setForeground(selectionForeground);
@@ -61,6 +68,8 @@ public class ProductTreeNodeRenderer implements TreeCellRenderer {
 				node.setForeground(textForeground);
 				node.setBackground(textBackground);
 			}
+			
+			node.label.setMaximumSize(CheckBoxTreeNode.size);
 
 			returnValue = node;	
 		} else {

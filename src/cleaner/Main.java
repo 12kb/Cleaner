@@ -21,10 +21,10 @@ public class Main extends JFrame {
 		super("Test");
 		this.setSize(200, 200);
 
-		Object[] obj = { new ProductTreeNode("Hello", false),
-				new ProductTreeNode("Loger line", true),
-				new ProductTreeNode("The longggest line", true),
-				new ProductTreeNode("short line", true) };
+		Object[] obj = { new CheckBoxTreeNode("Hello", false),
+				new CheckBoxTreeNode("Loger line", true),
+				new CheckBoxTreeNode("The longggest line", true),
+				new CheckBoxTreeNode("short line", true) };
 		
 		Vector<Object> elements = new Vector<Object>();
 		for (int i = 0; i < obj.length; i++) {
