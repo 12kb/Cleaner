@@ -1,10 +1,15 @@
 package cleaner;
 
+import java.awt.BorderLayout;
 import java.util.Vector;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTree;
 
+import cleaner.GUI.CheckBoxTreeCellEditor;
 import cleaner.GUI.CheckBoxTreeNode;
 import cleaner.GUI.CheckBoxTreeNodeRenderer;
 
@@ -18,7 +23,7 @@ public class Main extends JFrame {
 	public Main() {
 
 		super("Test");
-		this.setSize(200, 200);
+		this.setSize(500, 200);
 
 		Object[] obj = { new CheckBoxTreeNode("Hello", false),
 				new CheckBoxTreeNode("Loger line", true),
@@ -35,6 +40,8 @@ public class Main extends JFrame {
 		
 		JTree tree = new JTree(root);
 		tree.setCellRenderer(new CheckBoxTreeNodeRenderer());
+		tree.setCellEditor(new CheckBoxTreeCellEditor(tree));
+		tree.setEditable(true);
 		
 		/*JPanel content = new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
@@ -45,15 +52,19 @@ public class Main extends JFrame {
 		content.add(new ProductTreeNode("short line", true));
 
 		this.setContentPane(content);*/
-		
-		this.add(tree);
-		this.setVisible(true);
+		JPanel content = new JPanel();
+		content.setLayout(new BorderLayout(5,5));
+		content.add(tree, BorderLayout.CENTER);
+		JScrollPane scrollPane = new JScrollPane(tree);
+		content.add(scrollPane, BorderLayout.CENTER);
+		content.add(new JButton("Hello"),BorderLayout.EAST);
+		this.setContentPane(content);
 	}
 
 	public static void main(String[] args) {
-		@SuppressWarnings("unused")
 		Main frame = new Main();
-		//Main.setDefaultLookAndFeelDecorated(true);
+		Main.setDefaultLookAndFeelDecorated(true);
+		frame.setVisible(true);
 	}
 
 }

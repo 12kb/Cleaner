@@ -11,10 +11,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-
 public class CheckBoxTreeNodeRenderer implements TreeCellRenderer {
 		
 	private CheckBoxTreeLeaf leafRenderer;
+	public CheckBoxTreeLeaf getLeafRenderer(){
+		return leafRenderer;
+	}
+	
 	
 	private DefaultTreeCellRenderer nonLeafRenderer = new DefaultTreeCellRenderer();
 
@@ -45,12 +48,19 @@ public class CheckBoxTreeNodeRenderer implements TreeCellRenderer {
 		
 		if (leaf) {
 			
-			Object d = ((DefaultMutableTreeNode)value).getUserObject();
-			CheckBoxTreeNode node = (CheckBoxTreeNode) d;
+			CheckBoxTreeNode node = null;
 			
+			if (value != null){
+				Object d = ((DefaultMutableTreeNode)value).getUserObject();
+				node = (CheckBoxTreeNode) d;
+			}else{
+				System.out.println("CheckBoxTreeNodeRenderer.getTreeCellRendererComponent : Object arg is null");
+			}
+				
 			if (selected) {
 				leafRenderer.setForeground(selectionForeground);
 				leafRenderer.setBackground(selectionBackground);
+				//leafRenderer.setBorder(new Border());
 			} else {
 				leafRenderer.setForeground(textForeground);
 				leafRenderer.setBackground(textBackground);
@@ -58,9 +68,8 @@ public class CheckBoxTreeNodeRenderer implements TreeCellRenderer {
 			
 			leafRenderer.setText(node.name);
 			leafRenderer.setSelected(node.checked);
-			
-			leafRenderer.setMaximumSize(new Dimension(200,leafRenderer.getMaximumSize().height));
-			leafRenderer.setSize(new Dimension(200,leafRenderer.getMaximumSize().height));
+			//TODO протащить размер из дерева
+			leafRenderer.setPreferredSize(new Dimension(200, leafRenderer.getPreferredSize().height));
 			
 			leafRenderer.toString();
 			

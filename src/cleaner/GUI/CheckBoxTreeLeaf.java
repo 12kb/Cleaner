@@ -1,9 +1,11 @@
 package cleaner.GUI;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.LayoutManager;
+import java.awt.event.ItemListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,24 +32,14 @@ public class CheckBoxTreeLeaf extends JPanel {
 	}
 	
 	
-	@Override
-	public Dimension getMaximumSize(){
-		Dimension label_max_dim = label.getMaximumSize();
-		return new Dimension(label_max_dim.width + box.getMaximumSize().width, label_max_dim.height);
-	}
-	@Override
-	public void setMaximumSize(Dimension dim){
-		super.setMaximumSize(dim);
-		//Dimension box_max_dim = box.getMaximumSize();
-		//box.setMaximumSize(new Dimension(box_max_dim.width, dim.height));
-		//label.setMaximumSize(new Dimension((dim.width - box_max_dim.width), dim.height));
-		label.setMaximumSize(dim);
+	public void addItemListener(ItemListener listener){
+		box.addItemListener(listener);
 	}
 	
 	
 	@Override
 	public String toString(){
-		System.out.println(getComponent(0).toString() + "\n" + getComponent(1).toString());
+		//System.out.println(getComponent(0).toString() + "\n" + getComponent(1).toString());
 		return label.getText();
 	}
 	
@@ -55,18 +47,30 @@ public class CheckBoxTreeLeaf extends JPanel {
 		this.getComponent(0).setSize(d);
 	}
 	
+	
+	@Override
+	public void setBackground(Color bg){
+		super.setBackground(bg);
+		if (label != null) label.setBackground(bg);
+		if (box != null) box.setBackground(bg);
+	}
+	
+	
 	public CheckBoxTreeLeaf(String name, boolean isSelected){
+		super();
 		label = new JLabel(name);
 		box = new JCheckBox();
 		box.setSelected(isSelected);
 		
-		LayoutManager lm = new BoxLayout(this, BoxLayout.LINE_AXIS);
+		LayoutManager lm = new BorderLayout();
 		
 		setLayout(lm);
 		
+		label.setOpaque(true);
+		box.setOpaque(true);
 		
-		add(label);
-		add(box);
+		add(label,BorderLayout.WEST);
+		add(box,BorderLayout.EAST);
 	}
 
 	
