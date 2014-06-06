@@ -13,6 +13,8 @@ import cleaner.GUI.CheckBoxTreeCellEditor;
 import cleaner.GUI.CheckBoxTreeNode;
 import cleaner.GUI.CheckBoxTreeNodeRenderer;
 
+
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Main extends JFrame {
 
 	/**
@@ -30,12 +32,13 @@ public class Main extends JFrame {
 				new CheckBoxTreeNode("The longggest line", true),
 				new CheckBoxTreeNode("short line", true) };
 		
-		Vector<Object> elements = new Vector<Object>();
+		Vector elements = new NamedVector("Ёлементы");
 		for (int i = 0; i < obj.length; i++) {
 		      elements.add(obj[i]);
 		}
 		
-		Vector<Object> root = new Vector<>();
+		
+		Vector root = new Vector();
 		root.add(elements);
 		
 		JTree tree = new JTree(root);
@@ -67,4 +70,6 @@ public class Main extends JFrame {
 		frame.setVisible(true);
 	}
 
+	
+	public static 
 }
