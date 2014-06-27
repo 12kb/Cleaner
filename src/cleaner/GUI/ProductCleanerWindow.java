@@ -15,16 +15,18 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
 import cleaner.ArrayListModel;
+import cleaner.ArrayTableModel;
 import cleaner.product.ProductRecord;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ProductCleanerWindow {
 
-	private static JList products_list;
-	private static JList install_list;
+	private static JTable products_list;
+	private static JTable install_list;
 	
 	public ProductCleanerWindow(ProductRecord[] prods, ProductRecord[] insts){
 		JFrame window = new JFrame("Cleaner 0.01 beta");
@@ -34,14 +36,14 @@ public class ProductCleanerWindow {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//первый список
-		products_list = createList(prods);
+		products_list = createTable(prods);
 		JScrollPane products_list_scrl = new JScrollPane(products_list);
 		content.add(products_list_scrl, BorderLayout.WEST);
 		
-		products_list.setCellRenderer(new MyListCellRenderer());
+		products_list.setCellEditor(new ComponentTableCellEditor());
 		
 		// второй список
-		install_list = createList(insts);
+		install_list = createTable(insts);
 		JScrollPane install_list_scrl = new JScrollPane(install_list);
 		content.add(products_list_scrl, BorderLayout.WEST);
 		
@@ -88,20 +90,19 @@ public class ProductCleanerWindow {
 	}
 	
 	
-	private static JList createList(ProductRecord products[]){
-		ArrayListModel listModel = new ArrayListModel();
+	private static JTable createTable(ProductRecord products[]){
+		ArrayTableModel tableModel = new ArrayTableModel();
 		
 		for(int i=0; i<products.length; i++){
-			listModel.add(products[i]);
+			tableModel.add(products[i]);
 		}
 		
-		JList list = new JList(listModel);
+		JTable table = new JTable(tableModel);
 		
-		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		list.setLayoutOrientation(JList.VERTICAL);
-		list.setPreferredSize(new Dimension(150, 300));
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setPreferredSize(new Dimension(150, 300));
 		
-		return list;
+		return table;
 	}
 	
 	
@@ -110,8 +111,8 @@ public class ProductCleanerWindow {
 	
 	
 	private static void moveSelectedProduct(int direction) {
-		JList from;
-		JList to;
+		JTable from;
+		JTable to;
 		
 		if (direction == TO_INSTALL){
 			from = products_list;
@@ -125,7 +126,7 @@ public class ProductCleanerWindow {
 		}
 		
 		
-		ProductRecord value = (ProductRecord)(from.getSelectedValue());
+		ProductRecord value = (ProductRecord)(from.getValueAt(from.getSelectedRow(), from.getSelectedColumn()));
 		if (value == null) {return;}
 		removeFromList(from, value);
 		addToList(to, value);
@@ -142,12 +143,12 @@ public class ProductCleanerWindow {
 	}
 	
 	
-	private static void addToList(JList list, ProductRecord value){
+	private static void addToList(JTable list, ProductRecord value){
 		((ArrayListModel)list.getModel()).add(value);
 	}
 	
 	
-	private static void removeFromList(JList list, ProductRecord value){
+	private static void removeFromList(JTable list, ProductRecord value){
 		((ArrayListModel)list.getModel()).remove(value);
 	}
 		
