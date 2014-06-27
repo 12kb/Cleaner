@@ -1,10 +1,13 @@
 package cleaner.GUI;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -14,13 +17,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import cleaner.ArrayListModel;
+import cleaner.product.ProductRecord;
+
 @SuppressWarnings({ "unchecked", "rawtypes" })
 public class ProductCleanerWindow {
 
-	static JList products_list;
-	static JList install_list;
+	private static JList products_list;
+	private static JList install_list;
 	
-	public ProductCleanerWindow(){
+	public ProductCleanerWindow(ProductRecord[] prods, ProductRecord[] insts){
 		JFrame window = new JFrame("Cleaner 0.01 beta");
 		JPanel content = new JPanel(new BorderLayout(5, 5));
 		
@@ -28,82 +34,49 @@ public class ProductCleanerWindow {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		//первый список
-		DefaultListModel products = new DefaultListModel();
-		
-		products.addElement("NanoCAD 4.0");
-		products.addElement("NanoCAD 4.5");
-		products.addElement("NanoCAD 5.0");
-		products.addElement("NanoCAD 5.1");
-		products.addElement("NanoCAD 5.2");
-		products.addElement("NanoCAD 5.3");
-		
-		products_list = new JList(products);
-		
-		products_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		products_list.setLayoutOrientation(JList.VERTICAL);
-		products_list.setPreferredSize(new Dimension(150, 300));
+		products_list = createList(prods);
 		JScrollPane products_list_scrl = new JScrollPane(products_list);
-		
 		content.add(products_list_scrl, BorderLayout.WEST);
-		 
-		window.setContentPane(content);
-		window.setSize(200,200);
-		window.setVisible(true);	 
+		
+		products_list.setCellRenderer(new MyListCellRenderer());
 		
 		// второй список
-		DefaultListModel install = new DefaultListModel();
-		
-		install.addElement("MechaniCS 8.0");
-		install.addElement("MechaniCS 8.1");
-		install.addElement("MechaniCS 8.2");
-		install.addElement("MechaniCS 8.3");
-		install.addElement("MechaniCS 8.4");
-		install.addElement("MechaniCS 8.5");
-		
-		install_list = new JList(install);
-		
-		install_list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		install_list.setLayoutOrientation(JList.VERTICAL);
-		install_list.setPreferredSize(new Dimension(150, 300));
+		install_list = createList(insts);
 		JScrollPane install_list_scrl = new JScrollPane(install_list);
-		
+		content.add(products_list_scrl, BorderLayout.WEST);
 		
 		// кнопки
 		
-		JButton toRight = new JButton(">>");
-		JButton toLeft = new JButton("<<");
+		JButton toInstall = new JButton(">>");
+		JButton toProducts = new JButton("<<");
 		
-		toRight.addActionListener(new ActionListener(){
+		toInstall.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				String value = (String)(products_list.getSelectedValue());
-				if (value == null) {return;}
-				DefaultListModel products = (DefaultListModel)(products_list.getModel());
-				products.removeElement(value);
-				
-				DefaultListModel install = (DefaultListModel)(install_list.getModel());
-				install.addElement(value);
+				ProductCleanerWindow.moveSelectedProduct(ProductCleanerWindow.TO_INSTALL);
 	        }
 		});
 		
 		
-		toLeft.addActionListener(new ActionListener(){
+		toProducts.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				String value = (String)(install_list.getSelectedValue());
-				if (value == null) {return;}
-				DefaultListModel install = (DefaultListModel)(install_list.getModel());
-				install.removeElement(value);
-				
-				DefaultListModel products = (DefaultListModel)(products_list.getModel());
-				products.addElement(value);
+				ProductCleanerWindow.moveSelectedProduct(ProductCleanerWindow.TO_PRODUCTS);
 	        }
 		});
+		
+		toInstall.setAlignmentX(Component.CENTER_ALIGNMENT);
+		toInstall.setAlignmentY(Component.CENTER_ALIGNMENT);
+		toProducts.setAlignmentX(Component.CENTER_ALIGNMENT);
+		toProducts.setAlignmentY(Component.CENTER_ALIGNMENT);
 		
 		JPanel buttonPanel = new JPanel();
 		BoxLayout blay = new BoxLayout(buttonPanel, BoxLayout.Y_AXIS);
 		buttonPanel.setLayout(blay);
+		buttonPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		
-		buttonPanel.add(toLeft);
-		buttonPanel.add(toRight);
+		buttonPanel.add(Box.createVerticalGlue());
+		buttonPanel.add(toProducts);
+		buttonPanel.add(toInstall);
+		buttonPanel.add(Box.createVerticalGlue());
 		
 		// показываем
 		content.add(install_list_scrl, BorderLayout.EAST);
@@ -114,4 +87,68 @@ public class ProductCleanerWindow {
 		window.setVisible(true);	 
 	}
 	
+	
+	private static JList createList(ProductRecord products[]){
+		ArrayListModel listModel = new ArrayListModel();
+		
+		for(int i=0; i<products.length; i++){
+			listModel.add(products[i]);
+		}
+		
+		JList list = new JList(listModel);
+		
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setLayoutOrientation(JList.VERTICAL);
+		list.setPreferredSize(new Dimension(150, 300));
+		
+		return list;
+	}
+	
+	
+	private static final int TO_INSTALL=1;
+	private static final int TO_PRODUCTS=2;
+	
+	
+	private static void moveSelectedProduct(int direction) {
+		JList from;
+		JList to;
+		
+		if (direction == TO_INSTALL){
+			from = products_list;
+			to = install_list;
+		} else if (direction == TO_PRODUCTS) {
+			from = install_list;
+			to = products_list;
+		} else {
+			System.err.println("moveSelectedProduct: Ќеверное значение направлени€ перемещени€.");
+			return;
+		}
+		
+		
+		ProductRecord value = (ProductRecord)(from.getSelectedValue());
+		if (value == null) {return;}
+		removeFromList(from, value);
+		addToList(to, value);
+	}
+	
+	
+	public static void addProduct(ProductRecord name){
+		addToList(products_list, name);
+	}
+	
+	
+	public static void addInstall(ProductRecord name){
+		addToList(install_list, name);
+	}
+	
+	
+	private static void addToList(JList list, ProductRecord value){
+		((ArrayListModel)list.getModel()).add(value);
+	}
+	
+	
+	private static void removeFromList(JList list, ProductRecord value){
+		((ArrayListModel)list.getModel()).remove(value);
+	}
+		
 }

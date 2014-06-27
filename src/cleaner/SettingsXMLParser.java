@@ -11,7 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import cleaner.product.ProductNode;
+import cleaner.product.ProductRecord;
 
 public class SettingsXMLParser {
 	
@@ -37,15 +37,15 @@ public class SettingsXMLParser {
         }
     }
 	
-	public Vector<ProductNode> getRoot(){
+	public Vector<ProductRecord> getRoot(){
 		
 		Document doc = getDocument();
 		NodeList root = doc.getChildNodes();
 		
-		Vector<ProductNode> products = new Vector<>();
+		Vector<ProductRecord> products = new Vector<>();
 		
 		for (int i=0; i < root.getLength(); i++){
-			products.add(new ProductNode(root.item(i)));
+			products.add(new ProductRecord(root.item(i)));
 		}
 		
 		return products;

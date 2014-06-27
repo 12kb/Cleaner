@@ -8,18 +8,18 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import cleaner.product.ProductNode;
+import cleaner.product.ProductRecord;
 
 @SuppressWarnings("serial")
 public class ProductPanel extends JPanel implements Observer {
 	
-	private ProductNode product;
+	private ProductRecord product;
 	
 	private JCheckBox checkbox;
 	private JLabel label;
 	private JTextArea txt;
 	
-	public ProductPanel(ProductNode product){
+	public ProductPanel(ProductRecord product){
 		if (product != null){
 			this.product = product;
 			this.update(product, null);

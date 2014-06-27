@@ -1,4 +1,4 @@
-package cleaner.GUI;
+package old;
 
 import java.awt.Color;
 import java.awt.Component;

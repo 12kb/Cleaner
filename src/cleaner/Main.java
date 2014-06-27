@@ -9,9 +9,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 
-import cleaner.GUI.CheckBoxTreeCellEditor;
-import cleaner.GUI.CheckBoxTreeNode;
-import cleaner.GUI.CheckBoxTreeNodeRenderer;
+import old.CheckBoxTreeCellEditor;
+import old.CheckBoxTreeNode;
+import old.CheckBoxTreeNodeRenderer;
+import old.NamedVector;
 
 
 @SuppressWarnings({"rawtypes", "unchecked"})
