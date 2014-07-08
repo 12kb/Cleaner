@@ -1,0 +1,44 @@
+<product>
+	<pathsToRemove>
+		<path>C:/Program Files (x86)/Nanosoft/Nanocad Механика 5.4/</path>
+		<path>С:/Program Data/Nanosoft/Nanocad Механика 5.4/</path>
+		<path>%APPDATA%/Nanosoft/Nanocad Механика 5.4/</path>
+	</pathsToRemove>
+
+	<regToRemove>
+		<reg>HKEY_CURRENT_USER/Software/Nanosoft/Nanocad Механика/5</reg>
+		<reg>HKEY_LOCAL_MACHINE/Software/Nanosoft/Nanocad Механика/5</reg>
+	</regToRemove>
+
+	<distr>//Fileserver/Build/Nano50/nMech5/ru-RU/</distr>
+	<icon-enabled>/icons/nMechEnabled.ico</icon-enabled>
+	<icon-disabled>/icons/nMechDisabled.ico</icon-disabled>
+
+	<installed>false</installed>
+
+	<platform>nanocad</platform>
+
+</product>
+
+
+<product>
+	<pathsToRemove>
+		<path>C:/Program Files/CSoft/MechaniCS 10/</path>
+		<path>С:/Program Data/CSoft/MechaniCS 10/</path>
+		<path>%APPDATA%/CSoft/MechaniCS 10/</path>
+	</pathsToRemove>
+
+	<regToRemove>
+		<reg>HKEY_CURRENT_USER/Software/CSoft/MechaniCS/10</reg>
+		<reg>HKEY_LOCAL_MACHINE/Software/CSoft/MechaniCS/10</reg>
+	</regToRemove>
+
+	<distr>//Fileserver/Build/Nano50/nMech5/ru-RU/</distr>
+	<icon-enabled>/icons/MechanicsEnabled.ico</icon-enabled>
+	<icon-disabled>/icons/MechanicsDisabled.ico</icon-disabled>
+
+	<installed>false</installed>
+
+	<platform>autocad</platform>
+
+</product>
